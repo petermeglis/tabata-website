@@ -1,0 +1,115 @@
+<html>
+    <head>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            th {
+                padding: 10px;
+            }
+        </style>
+    </head>
+
+    <div>
+        <p>Random Tabata Workout Picker</p>
+        <button onclick="generateWorkout()">Generate Workout</button>    
+    </div>
+    
+    <br>
+    
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Exercise</th>
+                </tr>    
+            </thead>
+            <tbody id="workout_output"></tbody>
+        </table>
+    </div>
+
+    
+    <script>
+        var categories = ["Upper Body", "Core", "Legs", "Whole Body"];
+        var upper_body = [
+            "Pushups",
+            "Tricep dip",
+            "Tricep-focused pushups",
+            "Low pushup hold (+core)",
+            "Pushup to side plank (+core)",
+            "Shoulder tap pushups (+core)"
+        ]
+        var core = [
+            "Supermans",
+            "Up-up-down-down plank",
+            "Mountain climbers",
+            "V-ups",
+            "Bicycles",
+            "Ski abs (pushup form, jump up left/right)"
+        ]
+        var legs = [
+            "Squats",
+            "Jump squats",
+            "Lunges",
+            "High knees",
+            "Butt kicks",
+            "Wall sit",
+            "Wall sit + calf raises"
+        ]
+        var whole_body = [
+            "Burpees",
+            "Jumping jacks",
+            "Bear crawl"
+        ]
+        var exercises = [upper_body, core, legs, whole_body]
+
+        function updateTable(workout) {
+            var output_tbody = document.getElementById("workout_output")
+            output_tbody.innerHTML = ""
+
+            var sequence = getSequence()
+            for (var category in workout) {
+                var row = output_tbody.insertRow()
+                var cell1 = row.insertCell()
+                var cell2 = row.insertCell()
+                cell1.innerHTML = category
+                cell2.innerHTML = workout[category]
+            }
+        }
+    
+        function generateWorkout() {
+            var workout = {}
+            var sequence = getSequence()
+            for (var i = 0; i < sequence.length; i++) {
+                var categoryIndex = sequence[i]
+                var category = categories[sequence[i]]
+                var categoryExercises = exercises[categoryIndex]
+                var exerciseIndex = getRandomNumber(categoryExercises.length)
+                var exercise = categoryExercises[exerciseIndex]
+
+                workout[category] = exercise
+            }
+            
+            updateTable(workout)
+        }
+    
+        function getSequence() {
+            var sequence = []
+            for (var i = 0; i < categories.length; i++) {
+                var num;
+                do {
+                    num = getRandomNumber(categories.length)
+                } while (sequence.includes(num))
+                sequence.push(num)
+            }
+            return sequence
+        }
+    
+        function getRandomNumber(max) {
+            return Math.floor(Math.random() * max)
+        }
+    
+    </script>
+</html>
